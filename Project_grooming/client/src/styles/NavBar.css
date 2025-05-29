@@ -1,0 +1,108 @@
+.modern-navbar {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #f0e6d9;
+}
+
+.navbar-brand {
+    text-decoration: none;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    transition: all 0.3s ease;
+    font-family: 'Playfair Display', serif;
+}
+
+.navbar-brand:hover {
+    color: #8b7355;
+}
+
+.brand-text {
+    background: linear-gradient(45deg, #8b7355, #d4b996);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.nav-button {
+    margin-left: 1rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.services-button {
+    background-color: #8b7355;
+    color: white;
+    border: 1px solid #8b7355;
+}
+
+.services-button:hover {
+    background-color: #d4b996;
+    border-color: #d4b996;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+}
+
+.admin-button {
+    background-color: #f8f5f0;
+    color: #8b7355;
+    border: 1px solid #e6d9c8;
+}
+
+.admin-button:hover {
+    background-color: #f0e6d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.1);
+}
+
+.logout-button {
+    background-color: #f8f5f0;
+    color: #8b7355;
+    border: 1px solid #e6d9c8;
+}
+
+.logout-button:hover {
+    background-color: #f0e6d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.1);
+}
+
+.login-button {
+    background-color: #8b7355;
+    color: white;
+    border: 1px solid #8b7355;
+}
+
+.login-button:hover {
+    background-color: #d4b996;
+    border-color: #d4b996;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+}
+
+/* Мобильные стили */
+@media (max-width: 991px) {
+    .nav-button {
+        margin: 0.5rem 0;
+        width: 100%;
+    }
+    
+    .navbar-collapse {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        margin-top: 1rem;
+        border: 1px solid #f0e6d9;
+    }
+} 

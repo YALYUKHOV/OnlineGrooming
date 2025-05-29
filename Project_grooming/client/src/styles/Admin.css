@@ -1,0 +1,110 @@
+.admin-container {
+    padding: 3rem 0;
+    background-color: #f8f5f0;
+    min-height: calc(100vh - 76px);
+}
+
+.admin-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #8b7355;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
+}
+
+.admin-subtitle {
+    font-size: 1.3rem;
+    color: #666;
+    margin-bottom: 4rem;
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.admin-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    height: 100%;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0e6d9;
+}
+
+.admin-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(139, 115, 85, 0.15);
+}
+
+.admin-card .card-body {
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.admin-card .card-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #8b7355;
+    font-family: 'Playfair Display', serif;
+}
+
+.admin-card .card-text {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.admin-card .btn {
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
+    letter-spacing: 0.5px;
+}
+
+.admin-card .btn:hover {
+    background-color: #d4b996;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+}
+
+.admin-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: #8b7355;
+    transition: all 0.3s ease;
+}
+
+.admin-card:hover .admin-icon {
+    transform: scale(1.1);
+    color: #d4b996;
+}
+
+@media (max-width: 768px) {
+    .admin-title {
+        font-size: 2.2rem;
+    }
+    
+    .admin-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 3rem;
+    }
+    
+    .admin-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .admin-card .card-body {
+        padding: 2rem;
+    }
+} 
