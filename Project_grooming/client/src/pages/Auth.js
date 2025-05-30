@@ -30,14 +30,12 @@ const Auth = observer(() => {
       setError('');
       if (isLogin) {
         data = await login(email, password);
-        console.log('Login response:', data);
       } else {
         if (!validatePhone(phone)) {
           setError('Телефон должен быть в формате +7XXXXXXXXXX');
           return;
         }
         data = await registration(email, password, name, phone);
-        console.log('Registration response:', data);
       }
       user.setUser(data);
       user.setIsAuth(true);

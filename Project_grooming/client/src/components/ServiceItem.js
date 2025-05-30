@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
-import { Card, Carousel } from 'react-bootstrap';
+import { Card, Carousel, Button } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import '../styles/CommonStyles.css';
 
-const ServiceItem = observer(({ service }) => {
+const ServiceItem = observer(({ service, onBookClick }) => {
     const [showCarousel, setShowCarousel] = useState(false);
-    const [imageError, setImageError] = useState(false);
     const images = service.images || [];
 
-    console.log('Service:', service);
-    console.log('Service images:', images);
-    console.log('API URL:', process.env.REACT_APP_API_URL);
-
     const getImageUrl = (imageName) => {
-        if (!imageName) return '';
+        if (!imageName) return null;
         const baseUrl = process.env.REACT_APP_API_URL?.endsWith('/') 
             ? process.env.REACT_APP_API_URL.slice(0, -1) 
             : process.env.REACT_APP_API_URL;
@@ -22,7 +17,12 @@ const ServiceItem = observer(({ service }) => {
 
     const handleImageError = () => {
         console.error('Failed to load image:', getImageUrl(images[0]));
-        setImageError(true);
+    };
+
+    const handleBookClick = () => {
+        if (typeof onBookClick === 'function') {
+            onBookClick(service);
+        }
     };
 
     return (
@@ -61,7 +61,7 @@ const ServiceItem = observer(({ service }) => {
                     />
                 )}
             </div>
-            <Card.Body className="d-flex flex-column">
+            <Card.Body>
                 <Card.Title>{service.name}</Card.Title>
                 <Card.Text className="flex-grow-1">{service.description}</Card.Text>
                 <div className="d-flex justify-content-between align-items-center mt-3">
@@ -72,6 +72,13 @@ const ServiceItem = observer(({ service }) => {
                         <small>Длительность: {service.duration} мин.</small>
                     </div>
                 </div>
+                <Button 
+                    variant="primary" 
+                    className="mt-3"
+                    onClick={handleBookClick}
+                >
+                    Записаться
+                </Button>
             </Card.Body>
         </Card>
     );

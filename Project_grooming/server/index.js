@@ -67,11 +67,6 @@ const start = async () => {
         await sequelize.sync(); // Синхронизация моделей с базой данных
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
-            console.log('Available routes:');
-            console.log('- POST /api/client/registration');
-            console.log('- POST /api/client/login');
-            console.log('- GET /api/client/check');
-            console.log('- POST /api/client/logout');
         });
     } catch (e) {
         console.log(e);

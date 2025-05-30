@@ -8,7 +8,7 @@ import ServiceStore from './store/ServiceStore';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 export const Context = createContext(null);
 
-console.log(process.env.REACT_APP_API_URL);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

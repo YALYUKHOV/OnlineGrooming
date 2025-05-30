@@ -12,7 +12,6 @@ export default class UserStore {
     }
 
     setUser(user) {
-        console.log('Setting user:', user);
         this._user = user;//сохраняет данные о пользв
     }
 
@@ -25,7 +24,6 @@ export default class UserStore {
     }
 
     get isAdmin() {
-        console.log('Checking isAdmin, user role:', this._user.role);
         return this._user.role === 'ADMIN';
     }
 }

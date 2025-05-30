@@ -10,9 +10,9 @@ const Appointment = sequelize.define("Appointment", {
         defaultValue: "запланировано" 
     },
     total_price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0.00,
         comment: 'Общая стоимость всех услуг в записи'
     },
     notes: {
@@ -46,17 +46,6 @@ const Client = sequelize.define("Client", {
         allowNull: false,
         defaultValue: 'CLIENT'
     },
-}, {
-    timestamps: true
-})
-
-const Employee = sequelize.define("Employee", {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false },
-    position: { type: DataTypes.STRING, allowNull: false },
-    phone: { type: DataTypes.STRING, allowNull: false, unique: true },
-    email: { type: DataTypes.STRING, allowNull: false, unique: true },
-    password: { type: DataTypes.STRING, allowNull: false },
 }, {
     timestamps: true
 })
@@ -98,6 +87,11 @@ const Service = sequelize.define("Service", {
         allowNull: true,
         comment: 'Категория услуги'
     },
+    isActive: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
 }, {
     timestamps: true
 })
@@ -121,12 +115,6 @@ const RefreshToken = sequelize.define('refresh_token', {
 })
 
 // Связи между моделями
-Employee.hasMany(Appointment, { foreignKey: "employee_id", onDelete: "CASCADE" });
-Appointment.belongsTo(Employee, { foreignKey: "employee_id" });
-
-Employee.hasMany(Schedule, { foreignKey: "employee_id", onDelete: "CASCADE" });
-Schedule.belongsTo(Employee, { foreignKey: "employee_id" });
-
 Schedule.hasMany(Appointment, { foreignKey: "schedule_id", onDelete: "CASCADE" });
 Appointment.belongsTo(Schedule, { foreignKey: "schedule_id" });
 
@@ -142,7 +130,7 @@ Service.belongsToMany(Appointment, {
 });
 
 Client.hasMany(Appointment, { foreignKey: "client_id", onDelete: "CASCADE" });
-Appointment.belongsTo(Client, { foreignKey: "client_id" });
+Appointment.belongsTo(Client, { foreignKey: "client_id", as: 'Client' });
 
 RefreshToken.belongsTo(Client);
 Client.hasMany(RefreshToken);
@@ -151,7 +139,6 @@ module.exports = {
     Appointment,
     AppointmentService,
     Client,
-    Employee,
     Schedule,
     Service,
     InvalidToken,

@@ -16,4 +16,13 @@ router.put('/:id', authMiddleware, scheduleController.update);
 // Удаление записи из расписания
 router.delete('/:id', authMiddleware, scheduleController.delete);
 
+// Получение доступных слотов на день (публичный доступ)
+router.get('/available', scheduleController.getAvailableSlots);
+
+// Проверка доступности слотов для услуги (публичный доступ)
+router.get('/check', scheduleController.checkSlotsAvailability);
+
+// Создание слотов на день (только для админа)
+router.post('/create-day', authMiddleware, scheduleController.createDaySlots);
+
 module.exports = router;

@@ -1,16 +1,16 @@
 const Router = require('express');
-const router = Router();
 const appointmentController = require('../controllers/appointmentController');
 const authMiddleware = require('../middleware/authMiddleware');
+const checkRoleMiddleware = require('../middleware/checkRoleMiddleware');
 
-// Эндпоинты для клиентов
-router.get('/available-dates', authMiddleware, appointmentController.getAvailableDates);
-router.get('/user-appointments', authMiddleware, appointmentController.getUserAppointments);
+const router = new Router();
 
-// Общие CRUD операции
+// Публичные маршруты
+router.get('/user', authMiddleware, appointmentController.getUserAppointments);
 router.post('/', authMiddleware, appointmentController.create);
-router.get('/', authMiddleware, appointmentController.getAll);
-router.delete('/:id', authMiddleware, appointmentController.deleteOne);
-router.put('/:id', authMiddleware, appointmentController.updateOne);
+router.put('/:id/cancel', authMiddleware, appointmentController.cancelAppointment);
+
+// Админские маршруты
+router.get('/', authMiddleware, checkRoleMiddleware('ADMIN'), appointmentController.getAll);
 
 module.exports = router;

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Context } from '../index';
-import { SHOP_ROUTE, ADMIN_ROUTE, LOGIN_ROUTE } from '../utils/consts';
+import { SHOP_ROUTE, ADMIN_ROUTE, LOGIN_ROUTE, APPOINTMENTS_ROUTE } from '../utils/consts';
 import { Button } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
@@ -12,10 +12,14 @@ const NavBar = observer(() => {
     const {user} = useContext(Context);
     const navigate = useNavigate();
     
+    const handleAdminClick = () => {
+        navigate(ADMIN_ROUTE);
+    };
 
     const handleLogout = () => {
         user.setIsAuth(false);
         user.setUser({});
+        localStorage.removeItem('token');
         navigate(LOGIN_ROUTE);
     };
 
@@ -39,10 +43,17 @@ const NavBar = observer(() => {
                     <Nav className="ms-auto">
                         {user.isAuth ? (
                             <>
+                                <Button 
+                                    className="nav-button appointments-button" 
+                                    onClick={() => navigate(APPOINTMENTS_ROUTE)}
+                                >
+                                    <i className="bi bi-calendar me-2"></i>
+                                    Мои записи
+                                </Button>
                                 {user.isAdmin && (
                                     <Button 
                                         className="nav-button admin-button" 
-                                        onClick={() => navigate(ADMIN_ROUTE)}
+                                        onClick={handleAdminClick}
                                     >
                                         <i className="bi bi-gear me-2"></i>
                                         Админ панель

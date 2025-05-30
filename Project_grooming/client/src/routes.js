@@ -1,20 +1,21 @@
-import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SERVICE_ROUTE, SHOP_ROUTE } from "./utils/consts";
+import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SERVICE_ROUTE, SHOP_ROUTE, APPOINTMENTS_ROUTE } from "./utils/consts";
 import Admin from "./pages/Admin";
 import Basket from "./pages/Basket";
 import Auth from "./pages/Auth";
 import Shop from "./pages/Shop";
 import ServicePage from "./pages/ServicePage";
 import Home from "./pages/Home";
+import UserAppointments from "./pages/UserAppointments";
 
 export const authRoutes = [
     {
         path: ADMIN_ROUTE,
         Component: Admin
     },
-    // {
-    //     path: BASKET_ROUTE,
-    //     Component: Basket
-    // }
+    {
+        path: APPOINTMENTS_ROUTE,
+        Component: UserAppointments
+    }
 ]
 
 export const publicRoutes = [

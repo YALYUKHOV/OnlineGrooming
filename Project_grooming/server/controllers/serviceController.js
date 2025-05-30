@@ -3,11 +3,12 @@ const ApiError = require('../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
 const fs = require('fs');
+const { Op } = require('sequelize');
 
 class ServiceController {
   async create(req, res, next) {
     try {
-      const { name, description, price, duration, category } = req.body;
+      const { name, description, price, duration, category, isActive } = req.body;
       
       if (!name || !description || !price || !duration) {
         return next(ApiError.badRequest('Не все поля заполнены'));
@@ -54,7 +55,8 @@ class ServiceController {
         price, 
         duration,
         category,
-        images: images
+        images: images,
+        isActive: isActive === undefined ? true : isActive
       });
 
       console.log('Created service:', service);
@@ -69,6 +71,7 @@ class ServiceController {
     try {
       console.log('Getting all services...');
       const services = await Service.findAll({
+        where: { isActive: true },
         order: [['name', 'ASC']]
       });
       console.log('Found services:', services);
@@ -180,6 +183,35 @@ class ServiceController {
 
       return res.json({ fileNames });
     } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
+
+  async toggleServiceStatus(req, res, next) {
+    try {
+      const { id } = req.params;
+      const service = await Service.findByPk(id);
+      
+      if (!service) {
+        return next(ApiError.notFound('Услуга не найдена'));
+      }
+
+      await service.update({ isActive: !service.isActive });
+      return res.json(service);
+    } catch (e) {
+      console.error('Error toggling service status:', e);
+      next(ApiError.badRequest(e.message));
+    }
+  }
+
+  async getAllForAdmin(req, res, next) {
+    try {
+      const services = await Service.findAll({
+        order: [['name', 'ASC']]
+      });
+      return res.json(services);
+    } catch (e) {
+      console.error('Error in getAllForAdmin:', e);
       next(ApiError.badRequest(e.message));
     }
   }

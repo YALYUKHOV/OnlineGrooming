@@ -1,16 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { Context } from '../../index';
-import '../../styles/CommonStyles.css';
 import { createService } from '../../http/serviceAPI';
+import { Context } from '../../index';
+import { observer } from 'mobx-react-lite';
+import '../../styles/CommonStyles.css';
 
-const CreateService = ({ show, onHide }) => {
+const CreateService = observer(({ show, onHide }) => {
     const { service } = useContext(Context);
     const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
-    const [duration, setDuration] = useState('');
     const [category, setCategory] = useState('');
+    const [duration, setDuration] = useState('');
+    const [description, setDescription] = useState('');
     const [isNewCategory, setIsNewCategory] = useState(false);
     const [newCategory, setNewCategory] = useState('');
     const [mainImage, setMainImage] = useState(null);
@@ -18,7 +19,17 @@ const CreateService = ({ show, onHide }) => {
     const [previewUrls, setPreviewUrls] = useState([]);
     const [categories, setCategories] = useState([]);
 
-    
+    useEffect(() => {
+        if (show) {
+            service.loadServices();
+        }
+    }, [show]);
+
+    useEffect(() => {
+        // Получаем уникальные категории из существующих услуг
+        const uniqueCategories = [...new Set(service.services.map(s => s.category))].filter(Boolean);
+        setCategories(uniqueCategories);
+    }, [service.services]);
 
     const handleMainImageChange = (e) => {
         const file = e.target.files[0];
@@ -29,40 +40,36 @@ const CreateService = ({ show, onHide }) => {
         }
     };
 
- с
-
-    const addService = async () => {
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('description', description);
-        formData.append('price', price);
-        formData.append('duration', duration);
+    const handleAdditionalImagesChange = (e) => {
+        const files = Array.from(e.target.files);
+        setAdditionalImages(prev => [...prev, ...files]);
         
-        if (isNewCategory) {
-            formData.append('category', newCategory);
-        } else {
-            formData.append('category', category);
-        }
+        // Создаем URL для предпросмотра
+        const newUrls = files.map(file => URL.createObjectURL(file));
+        setPreviewUrls(prev => [...prev, ...newUrls]);
+    };
 
-        console.log('Main image:', mainImage);
-        console.log('Additional images:', additionalImages);
-
-        // Добавляем все изображения в массив images
-        if (mainImage) {
-            console.log('Appending main image:', mainImage.name);
-            formData.append('images', mainImage);
-        }
-        additionalImages.forEach((image, index) => {
-            console.log(`Appending additional image ${index}:`, image.name);
-            formData.append('images', image);
-        });
-
-        // Проверяем содержимое FormData
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-
+    const handleSubmit = async () => {
         try {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('description', description);
+            formData.append('price', price);
+            formData.append('duration', duration);
+            
+            if (isNewCategory) {
+                formData.append('category', newCategory);
+            } else {
+                formData.append('category', category);
+            }
+
+            if (mainImage) {
+                formData.append('images', mainImage);
+            }
+            additionalImages.forEach(image => {
+                formData.append('images', image);
+            });
+
             await createService(formData);
             onHide();
             setName('');
@@ -113,28 +120,6 @@ const CreateService = ({ show, onHide }) => {
                         />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Стоимость</Form.Label>
-                        <Form.Control
-                            value={price}
-                            onChange={e => setPrice(e.target.value)}
-                            placeholder="Введите стоимость услуги"
-                            type="number"
-                            min="0"
-                            step="100"
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Длительность (в минутах)</Form.Label>
-                        <Form.Control
-                            value={duration}
-                            onChange={e => setDuration(e.target.value)}
-                            placeholder="Введите длительность услуги"
-                            type="number"
-                            min="0"
-                            step="10"
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
                         <Form.Check
                             type="switch"
                             id="custom-switch"
@@ -166,6 +151,24 @@ const CreateService = ({ show, onHide }) => {
                             </Form.Select>
                         </Form.Group>
                     )}
+                    <Form.Group className="mb-3">
+                        <Form.Label>Цена</Form.Label>
+                        <Form.Control
+                            value={price}
+                            onChange={e => setPrice(e.target.value)}
+                            placeholder="Введите цену"
+                            type="number"
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Длительность (в минутах)</Form.Label>
+                        <Form.Control
+                            value={duration}
+                            onChange={e => setDuration(e.target.value)}
+                            placeholder="Введите длительность"
+                            type="number"
+                        />
+                    </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Основное изображение</Form.Label>
                         <Form.Control
@@ -209,17 +212,12 @@ const CreateService = ({ show, onHide }) => {
                 <Button variant="outline-danger" onClick={onHide}>
                     Закрыть
                 </Button>
-                <Button variant="outline-success" onClick={addService}>
+                <Button variant="outline-success" onClick={handleSubmit}>
                     Добавить
                 </Button>
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
 export default CreateService;
-useEffect(() => {
-        // Получаем уникальные категории из существующих услуг
-        const uniqueCategories = [...new Set(service.services.map(s => s.category))].filter(Boolean);
-        setCategories(uniqueCategories);
-    }, [service.services]);

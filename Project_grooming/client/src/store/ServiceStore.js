@@ -14,10 +14,8 @@ export default class ServiceStore {
 
     async loadServices() {
         try {
-            console.log('Starting to load services...');
             this._loading = true;
             const services = await fetchServices();
-            console.log('Services loaded:', services);
             this.setServices(services);
             this.updateTypes(services);
         } catch (error) {
@@ -29,14 +27,12 @@ export default class ServiceStore {
     }
 
     setServices(services) {
-        console.log('Setting services:', services);
         this._services = services;
         this.updateTypes(services);
     }
 
     updateTypes(services) {
         const types = [...new Set(services.map(service => service.category))].filter(Boolean);
-        console.log('Updating types:', types);
         this.setTypes(types);
     }
 
@@ -49,7 +45,6 @@ export default class ServiceStore {
     }
 
     get services() {
-        console.log('Getting services:', this._services);
         return this._services;
     }
 
