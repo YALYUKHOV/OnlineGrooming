@@ -23,9 +23,3 @@ export const cancelAppointment = async (id) => {
     const {data} = await $authHost.put(`/api/appointment/${id}/cancel`);
     return data;
 };
-
-// Обновление статуса записи (для админа)
-export const updateAppointmentStatus = async (id, status) => {
-    const {data} = await $authHost.put(`/api/appointment/${id}/status`, { status });
-    return data;
-}; 

@@ -28,7 +28,7 @@ const Home = () => {
                         <div className="col-md-6">
                             <div className="welcome-image">
                                 <img 
-                                    src="/images/welcome.jpg" 
+                                    src="/images/приввет.jpg" 
                                     alt="Welcome" 
                                     className="img-fluid rounded"
                                 />

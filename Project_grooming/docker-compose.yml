@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  frontend:
+    image: frontend-app
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    image: backend-app
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      DB_NAME: online_grooming
+      DB_USER: postgres
+      DB_PASSWORD: root
+      DB_HOST: postgresdb
+      DB_PORT: 5432
+      SECRET_KEY: 12345
+      REFRESH_SECRET_KEY: 12345
+    volumes:
+      - ./server/static:/app/static
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres:17
+    container_name: online_grooming_data
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: online_grooming
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data: 

@@ -13,11 +13,6 @@ export const fetchAdminServices = async () => {
     return data;
 };
 
-// // Получение одной услуги по id
-// export const fetchOneService = async (id) => {
-//     const {data} = await $host.get('/api/service/' + id);
-//     return data;
-// };
 
 // Создание новой услуги (только для админа)
 export const createService = async (service) => {
@@ -29,17 +24,6 @@ export const createService = async (service) => {
     return data;
 };
 
-// // Обновление услуги (только для админа)
-// export const updateService = async (id, service) => {
-//     const {data} = await $authHost.put('/api/service/' + id, service);
-//     return data;
-// };
-
-// Удаление услуги (только для админа)
-export const deleteService = async (id) => {
-    const {data} = await $authHost.delete('/api/service/' + id);
-    return data;
-};
 
 // Загрузка изображения для услуги (только для админа)
 export const uploadServiceImage = async (file) => {

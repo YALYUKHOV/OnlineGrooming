@@ -205,61 +205,7 @@ class ScheduleController{
         }
     }
 
-    // Проверка доступности слотов для услуги
-    async checkSlotsAvailability(req, res, next) {
-        try {
-            const { date, serviceId, duration } = req.query;
-            const startDate = new Date(date);
-            startDate.setHours(9, 0, 0, 0);
-            const endDate = new Date(date);
-            endDate.setHours(21, 0, 0, 0);
-
-            // Получаем все слоты на день
-            const slots = await Schedule.findAll({
-                where: {
-                    date_time: {
-                        [Op.between]: [startDate, endDate]
-                    }
-                },
-                order: [['date_time', 'ASC']]
-            });
-
-            // Получаем занятые слоты
-            const bookedSlots = await Appointment.findAll({
-                where: {
-                    date_time: {
-                        [Op.between]: [startDate, endDate]
-                    },
-                    status: {
-                        [Op.notIn]: ['отменено']
-                    }
-                },
-                include: [{
-                    model: Schedule,
-                    as: 'schedule'
-                }]
-            });
-
-            // Помечаем занятые слоты
-            const bookedSlotIds = bookedSlots.map(slot => slot.schedule_id);
-            
-            // Проверяем доступность слотов с учетом длительности услуги
-            const availableSlots = slots.filter((slot, index) => {
-                if (bookedSlotIds.includes(slot.id)) return false;
-                
-                // Проверяем, достаточно ли последовательных свободных слотов
-                const requiredSlots = Math.ceil(duration / 30);
-                const hasEnoughSlots = slots.slice(index, index + requiredSlots)
-                    .every(s => !bookedSlotIds.includes(s.id));
-                
-                return hasEnoughSlots;
-            });
-
-            return res.json(availableSlots);
-        } catch (e) {
-            next(ApiError.badRequest(e.message));
-        }
-    }
+    
 }
   
 module.exports = new ScheduleController();

@@ -21,9 +21,9 @@ const CreateAppointment = ({ show, onHide, service }) => {
     const loadAvailableSlots = async () => {
         try {
             setLoading(true);
-            const formattedDate = selectedDate.toISOString().split('T')[0];
-            const slots = await fetchAvailableSlots(formattedDate);
-            setAvailableSlots(slots);
+            const formattedDate = selectedDate.toISOString().split('T')[0];//форматируем дату в формате YYYY-MM-DD
+            const slots = await fetchAvailableSlots(formattedDate);//получаем доступные слоты
+            setAvailableSlots(slots);//записываем доступные слоты в state
         } catch (error) {
             console.error('Error loading available slots:', error);
         } finally {
@@ -31,18 +31,18 @@ const CreateAppointment = ({ show, onHide, service }) => {
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async () => {//обработчик отправки формы
         try {
             if (!selectedSlot || !service) return;
 
-            const appointmentData = {
+            const appointmentData = {//данные для создания записи
                 serviceId: service.id,
                 scheduleId: selectedSlot.id,
                 dateTime: selectedSlot.date_time
             };
 
             await createAppointment(appointmentData);
-            onHide();
+            onHide();//скрываем модальное окно
         } catch (error) {
             console.error('Error creating appointment:', error);
         }

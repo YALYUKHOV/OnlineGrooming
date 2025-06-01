@@ -47,8 +47,12 @@ class AppointmentController {
                 total_price: service.price
             });
 
-            // Добавляем услугу к записи
-            await appointment.addService(service);
+            // Добавляем услугу к записи с ценой на момент записи
+            await appointment.addService(service, {
+                through: {
+                    price_at_time: service.price
+                }
+            });
 
             // Обновляем статус слота
             await schedule.update({ is_available: false });
@@ -58,6 +62,7 @@ class AppointmentController {
                 include: [
                     {
                         model: Service,
+                        as: 'services',
                         through: { attributes: [] }
                     }
                 ]

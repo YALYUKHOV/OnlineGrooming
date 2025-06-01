@@ -31,7 +31,7 @@ const CreateService = observer(({ show, onHide }) => {
         setCategories(uniqueCategories);
     }, [service.services]);
 
-    const handleMainImageChange = (e) => {
+    const handleMainImageChange = (e) => {//обработчик изменения основного изображения
         const file = e.target.files[0];
         if (file) {
             setMainImage(file);
@@ -40,9 +40,9 @@ const CreateService = observer(({ show, onHide }) => {
         }
     };
 
-    const handleAdditionalImagesChange = (e) => {
-        const files = Array.from(e.target.files);
-        setAdditionalImages(prev => [...prev, ...files]);
+    const handleAdditionalImagesChange = (e) => {//обработчик изменения дополнительных изображений
+        const files = Array.from(e.target.files);//получаем все файлы из input
+        setAdditionalImages(prev => [...prev, ...files]);//добавляем новые файлы в массив
         
         // Создаем URL для предпросмотра
         const newUrls = files.map(file => URL.createObjectURL(file));
